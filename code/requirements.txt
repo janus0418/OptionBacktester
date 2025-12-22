@@ -1,0 +1,24 @@
+# Numerical & Data
+numpy>=2.0.2
+pandas>=2.3.3
+scipy>=1.13.1
+
+# Visualization
+matplotlib>=3.9.4
+plotly>=6.5.0
+seaborn>=0.13.2
+
+# Database
+doltpy>=2.0.0
+
+# Optional Performance
+numba>=0.58.0
+
+# Development
+pytest>=7.4.0
+black>=23.0.0
+flake8>=6.0.0
+jupyter>=1.0.0
+notebook>=7.0.0
+ipykernel>=6.25.0
+pyyaml>=6.0
