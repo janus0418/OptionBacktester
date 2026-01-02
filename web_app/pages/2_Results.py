@@ -180,7 +180,7 @@ def render_metrics_tab(results):
 
     st.dataframe(
         pd.DataFrame(metrics_display),
-        use_container_width=True,
+        width="stretch",
         hide_index=True,
     )
 
@@ -243,7 +243,7 @@ def render_trades_tab(results):
         height=400,
         margin=dict(l=0, r=0, t=40, b=0),
     )
-    st.plotly_chart(fig, use_container_width=True)
+    st.plotly_chart(fig, width="stretch")
 
 
 def render_params_tab(results):
@@ -253,7 +253,7 @@ def render_params_tab(results):
     # Parameters table
     st.subheader("Parameters Used")
     params_df = pd.DataFrame([results["params"]])
-    st.dataframe(params_df, use_container_width=True, hide_index=True)
+    st.dataframe(params_df, width="stretch", hide_index=True)
 
     # Backtest configuration
     st.subheader("Backtest Configuration")
@@ -273,7 +273,7 @@ def render_params_tab(results):
             results.get("trading_days", "N/A"),
         ],
     }
-    st.dataframe(pd.DataFrame(config_data), use_container_width=True, hide_index=True)
+    st.dataframe(pd.DataFrame(config_data), width="stretch", hide_index=True)
 
     # Timestamp
     if "timestamp" in results:

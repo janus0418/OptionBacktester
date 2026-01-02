@@ -216,13 +216,13 @@ with col1:
     run_button = st.button(
         "🚀 Run Backtest",
         type="primary",
-        use_container_width=True,
+        width="stretch",
         disabled=not is_connected,
     )
 with col2:
     clear_button = st.button(
         "🗑️ Clear",
-        use_container_width=True,
+        width="stretch",
     )
 
 if clear_button:
@@ -274,7 +274,7 @@ if results is None:
                 "Ideal Conditions": info["ideal_conditions"],
             }
         )
-    st.dataframe(pd.DataFrame(strategy_data), use_container_width=True, hide_index=True)
+    st.dataframe(pd.DataFrame(strategy_data), width="stretch", hide_index=True)
 else:
     # Display results
     st.header(f"📊 {results['strategy']} Results")
@@ -309,7 +309,7 @@ else:
     # Parameters used
     st.subheader("Strategy Parameters Used")
     params_df = pd.DataFrame([results["params"]])
-    st.dataframe(params_df, use_container_width=True, hide_index=True)
+    st.dataframe(params_df, width="stretch", hide_index=True)
 
     # Save results section
     st.subheader("Save Results")
@@ -321,7 +321,7 @@ else:
             help="Enter a name to save this result",
         )
     with col2:
-        if st.button("💾 Save", use_container_width=True):
+        if st.button("💾 Save", width="stretch"):
             save_result(save_name, results)
             st.success(f"Saved as '{save_name}'")
 

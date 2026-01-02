@@ -287,7 +287,7 @@ def render_comparison_section():
             )
 
         df = pd.DataFrame(comparison_data)
-        st.dataframe(df, use_container_width=True, hide_index=True)
+        st.dataframe(df, width="stretch", hide_index=True)
     else:
         st.info("Add strategies to compare them side by side.")
 
@@ -335,7 +335,7 @@ with tab1:
         run_button = st.button(
             "🚀 Run Backtest",
             type="primary",
-            use_container_width=True,
+            width="stretch",
             disabled=not is_connected,
         )
 
