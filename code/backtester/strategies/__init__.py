@@ -68,6 +68,24 @@ from backtester.strategies.strategy_templates import (
     TemplateRegistry,
 )
 
+from backtester.strategies.strategy_validator import (
+    # Validation Result Types
+    ValidationSeverity,
+    ValidationIssue,
+    ValidationResult,
+    # Validators
+    StrategyConfigValidator,
+    RiskLimitValidator,
+    RiskLimits,
+    BacktestSanityChecker,
+    # Benchmark
+    PerformanceBenchmark,
+    BenchmarkComparison,
+    # Convenience Functions
+    validate_strategy,
+    validate_backtest_results,
+)
+
 from backtester.strategies.strategy_builder import (
     StrategyBuilder,
     BuiltStrategy,
@@ -233,4 +251,16 @@ __all__ = [
     "TrendFollowingConfig",
     # Template Registry
     "TemplateRegistry",
+    # Validation
+    "ValidationSeverity",
+    "ValidationIssue",
+    "ValidationResult",
+    "StrategyConfigValidator",
+    "RiskLimitValidator",
+    "RiskLimits",
+    "BacktestSanityChecker",
+    "PerformanceBenchmark",
+    "BenchmarkComparison",
+    "validate_strategy",
+    "validate_backtest_results",
 ]
