@@ -92,21 +92,40 @@ from backtester.data.data_validator import (
     ValidationError,
 )
 
+from backtester.data.data_manager import (
+    BaseDataAdapter,
+    CSVDataAdapter,
+    DoltDataAdapter,
+    DataSourceRegistry,
+    DataSourceError,
+    DataSourceConnectionError,
+    DataNotFoundError,
+    AllSourcesFailedError,
+)
+
 # Define public API
 __all__ = [
     # Main classes
-    'DoltAdapter',
-    'MarketDataLoader',
-    'DataValidator',
-
+    "DoltAdapter",
+    "MarketDataLoader",
+    "DataValidator",
+    # Multi-source data management
+    "BaseDataAdapter",
+    "CSVDataAdapter",
+    "DoltDataAdapter",
+    "DataSourceRegistry",
     # Exceptions
-    'DoltConnectionError',
-    'DoltQueryError',
-    'DataLoadError',
-    'InsufficientDataError',
-    'ValidationError',
+    "DoltConnectionError",
+    "DoltQueryError",
+    "DataLoadError",
+    "InsufficientDataError",
+    "ValidationError",
+    "DataSourceError",
+    "DataSourceConnectionError",
+    "DataNotFoundError",
+    "AllSourcesFailedError",
 ]
 
 # Module metadata
-__version__ = '0.1.0'
-__author__ = 'Options Backtester Team'
+__version__ = "0.1.0"
+__author__ = "Options Backtester Team"
