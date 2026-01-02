@@ -46,10 +46,16 @@ from backtester.core.pricing import black_scholes_price, calculate_greeks
 
 # Import structures
 from backtester.structures import (
-    LongStraddle, ShortStraddle,
-    LongStrangle, ShortStrangle,
-    BullCallSpread, BearPutSpread, BullPutSpread, BearCallSpread,
-    IronCondor, IronButterfly,
+    LongStraddle,
+    ShortStraddle,
+    LongStrangle,
+    ShortStrangle,
+    BullCallSpread,
+    BearPutSpread,
+    BullPutSpread,
+    BearCallSpread,
+    IronCondor,
+    IronButterfly,
 )
 
 # Import strategies
@@ -84,6 +90,7 @@ from backtester.data.dolt_adapter import DoltAdapter
 # Test Fixtures and Mock Data Generators
 # =============================================================================
 
+
 @pytest.fixture
 def mock_dolt_adapter():
     """Create a mock DoltAdapter for testing without database dependency."""
@@ -105,7 +112,7 @@ def create_mock_option_chain(
     expiration: datetime,
     current_date: datetime,
     iv: float = 0.25,
-    risk_free_rate: float = 0.04
+    risk_free_rate: float = 0.04,
 ) -> Dict[str, List[Dict[str, Any]]]:
     """
     Create a realistic mock option chain for testing.
@@ -143,81 +150,65 @@ def create_mock_option_chain(
     for K in strikes:
         # Calculate call price and Greeks
         call_price = black_scholes_price(
-            S=S,
-            K=K,
-            T=T,
-            r=risk_free_rate,
-            sigma=iv,
-            option_type='call'
+            S=S, K=K, T=T, r=risk_free_rate, sigma=iv, option_type="call"
         )
 
         call_greeks = calculate_greeks(
-            S=S,
-            K=K,
-            T=T,
-            r=risk_free_rate,
-            sigma=iv,
-            option_type='call'
+            S=S, K=K, T=T, r=risk_free_rate, sigma=iv, option_type="call"
         )
 
         # Calculate put price and Greeks
         put_price = black_scholes_price(
-            S=S,
-            K=K,
-            T=T,
-            r=risk_free_rate,
-            sigma=iv,
-            option_type='put'
+            S=S, K=K, T=T, r=risk_free_rate, sigma=iv, option_type="put"
         )
 
         put_greeks = calculate_greeks(
-            S=S,
-            K=K,
-            T=T,
-            r=risk_free_rate,
-            sigma=iv,
-            option_type='put'
+            S=S, K=K, T=T, r=risk_free_rate, sigma=iv, option_type="put"
         )
 
         # Add call data
-        calls.append({
-            'underlying': underlying,
-            'strike': K,
-            'expiration': expiration,
-            'option_type': 'call',
-            'bid': call_price * 0.98,  # Bid-ask spread
-            'ask': call_price * 1.02,
-            'mid': call_price,
-            'volume': int(1000 * np.exp(-0.5 * ((K - S) / (0.1 * S)) ** 2)),
-            'open_interest': int(5000 * np.exp(-0.5 * ((K - S) / (0.1 * S)) ** 2)),
-            'implied_volatility': iv,
-            'delta': call_greeks['delta'],
-            'gamma': call_greeks['gamma'],
-            'theta': call_greeks['theta'],
-            'vega': call_greeks['vega'],
-            'rho': call_greeks['rho'],
-        })
+        calls.append(
+            {
+                "underlying": underlying,
+                "strike": K,
+                "expiration": expiration,
+                "option_type": "call",
+                "bid": call_price * 0.98,  # Bid-ask spread
+                "ask": call_price * 1.02,
+                "mid": call_price,
+                "volume": int(1000 * np.exp(-0.5 * ((K - S) / (0.1 * S)) ** 2)),
+                "open_interest": int(5000 * np.exp(-0.5 * ((K - S) / (0.1 * S)) ** 2)),
+                "implied_volatility": iv,
+                "delta": call_greeks["delta"],
+                "gamma": call_greeks["gamma"],
+                "theta": call_greeks["theta"],
+                "vega": call_greeks["vega"],
+                "rho": call_greeks["rho"],
+            }
+        )
 
         # Add put data
-        puts.append({
-            'underlying': underlying,
-            'strike': K,
-            'expiration': expiration,
-            'option_type': 'put',
-            'bid': put_price * 0.98,
-            'ask': put_price * 1.02,
-            'mid': put_price,
-            'volume': int(1000 * np.exp(-0.5 * ((K - S) / (0.1 * S)) ** 2)),
-            'open_interest': int(5000 * np.exp(-0.5 * ((K - S) / (0.1 * S)) ** 2)),
-            'implied_volatility': iv,
-            'delta': put_greeks['delta'],
-            'gamma': put_greeks['gamma'],
-            'theta': put_greeks['theta'],
-            'vega': put_greeks['vega'],
-            'rho': put_greeks['rho'],
-        })
+        puts.append(
+            {
+                "underlying": underlying,
+                "strike": K,
+                "expiration": expiration,
+                "option_type": "put",
+                "bid": put_price * 0.98,
+                "ask": put_price * 1.02,
+                "mid": put_price,
+                "volume": int(1000 * np.exp(-0.5 * ((K - S) / (0.1 * S)) ** 2)),
+                "open_interest": int(5000 * np.exp(-0.5 * ((K - S) / (0.1 * S)) ** 2)),
+                "implied_volatility": iv,
+                "delta": put_greeks["delta"],
+                "gamma": put_greeks["gamma"],
+                "theta": put_greeks["theta"],
+                "vega": put_greeks["vega"],
+                "rho": put_greeks["rho"],
+            }
+        )
 
-    return {'calls': calls, 'puts': puts}
+    return {"calls": calls, "puts": puts}
 
 
 def create_mock_market_data(
@@ -225,7 +216,7 @@ def create_mock_market_data(
     start_date: datetime,
     end_date: datetime,
     initial_price: float = 450.0,
-    volatility: float = 0.015
+    volatility: float = 0.015,
 ) -> pd.DataFrame:
     """
     Create mock underlying price data following geometric Brownian motion.
@@ -258,14 +249,16 @@ def create_mock_market_data(
         low_price = min(open_price, close) - abs(np.random.normal(0, daily_vol * 0.3))
         volume = int(np.random.uniform(50_000_000, 100_000_000))
 
-        data.append({
-            'date': date,
-            'open': open_price,
-            'high': high_price,
-            'low': low_price,
-            'close': close,
-            'volume': volume,
-        })
+        data.append(
+            {
+                "date": date,
+                "open": open_price,
+                "high": high_price,
+                "low": low_price,
+                "close": close,
+                "volume": volume,
+            }
+        )
 
     return pd.DataFrame(data)
 
@@ -279,15 +272,14 @@ def mock_data_stream(mock_dolt_adapter, trading_calendar):
 
     # Create market data
     market_data_df = create_mock_market_data(
-        underlying='SPY',
-        start_date=start_date,
-        end_date=end_date,
-        initial_price=450.0
+        underlying="SPY", start_date=start_date, end_date=end_date, initial_price=450.0
     )
 
-    def mock_get_option_chain(underlying, date, min_dte=None, max_dte=None, dte_range=None, **kwargs):
+    def mock_get_option_chain(
+        underlying, date, min_dte=None, max_dte=None, dte_range=None, **kwargs
+    ):
         """Mock get_option_chain method for the adapter."""
-        row = market_data_df[market_data_df['date'] == pd.Timestamp(date)]
+        row = market_data_df[market_data_df["date"] == pd.Timestamp(date)]
         if row.empty:
             return pd.DataFrame()  # Return empty DataFrame instead of None
 
@@ -295,17 +287,17 @@ def mock_data_stream(mock_dolt_adapter, trading_calendar):
         expiration = date + timedelta(days=30)
 
         chain_data = create_mock_option_chain(
-            underlying='SPY',
-            underlying_price=row['close'].iloc[0],
+            underlying="SPY",
+            underlying_price=row["close"].iloc[0],
             expiration=expiration,
             current_date=date,
-            iv=0.20  # 20% IV
+            iv=0.20,  # 20% IV
         )
 
         # Combine calls and puts into a single DataFrame
         # This is what DoltAdapter.get_option_chain() returns
-        calls_df = pd.DataFrame(chain_data['calls'])
-        puts_df = pd.DataFrame(chain_data['puts'])
+        calls_df = pd.DataFrame(chain_data["calls"])
+        puts_df = pd.DataFrame(chain_data["puts"])
 
         # Concatenate calls and puts
         option_chain_df = pd.concat([calls_df, puts_df], ignore_index=True)
@@ -319,8 +311,8 @@ def mock_data_stream(mock_dolt_adapter, trading_calendar):
         data_source=mock_dolt_adapter,
         start_date=start_date,
         end_date=end_date,
-        underlying='SPY',
-        trading_calendar=trading_calendar
+        underlying="SPY",
+        trading_calendar=trading_calendar,
     )
 
     return data_stream
@@ -330,9 +322,7 @@ def mock_data_stream(mock_dolt_adapter, trading_calendar):
 def execution_model():
     """Create a standard execution model for testing."""
     return ExecutionModel(
-        commission_per_contract=0.65,
-        slippage_pct=0.01,
-        use_bid_ask=True
+        commission_per_contract=0.65, slippage_pct=0.01, use_bid_ask=True
     )
 
 
@@ -340,52 +330,53 @@ def execution_model():
 # Integration Test 1: Full Backtest Workflow
 # =============================================================================
 
+
 class TestFullBacktestWorkflow:
     """Test complete backtest workflow from start to finish."""
 
     def test_simple_backtest_execution(self, mock_data_stream, execution_model):
         """Test basic backtest execution with ShortStraddleHighIVStrategy."""
         strategy = ShortStraddleHighIVStrategy(
-            name='Short Straddle Test',
+            name="Short Straddle Test",
             initial_capital=100000.0,
             iv_rank_threshold=50,
             profit_target_pct=0.50,
             loss_limit_pct=2.0,
             min_entry_dte=45,
-            exit_dte=7
+            exit_dte=7,
         )
 
         engine = BacktestEngine(
             strategy=strategy,
             data_stream=mock_data_stream,
             execution_model=execution_model,
-            initial_capital=100000.0
+            initial_capital=100000.0,
         )
 
         # Run backtest
         results = engine.run()
 
         # Verify results structure
-        assert 'equity_curve' in results
-        assert 'trade_log' in results
-        assert 'greeks_history' in results
-        assert 'final_equity' in results
-        assert 'total_return' in results
+        assert "equity_curve" in results
+        assert "trade_log" in results
+        assert "greeks_history" in results
+        assert "final_equity" in results
+        assert "total_return" in results
 
         # Verify equity curve
-        equity_curve = results['equity_curve']
+        equity_curve = results["equity_curve"]
         assert isinstance(equity_curve, pd.DataFrame)
-        assert 'equity' in equity_curve.columns
-        assert 'cash' in equity_curve.columns
-        assert 'positions_value' in equity_curve.columns
+        assert "equity" in equity_curve.columns
+        assert "cash" in equity_curve.columns
+        assert "positions_value" in equity_curve.columns
         assert len(equity_curve) > 0
 
         # Verify financial correctness
-        assert results['final_equity'] > 0
-        assert results['final_equity'] == equity_curve['equity'].iloc[-1]
+        assert results["final_equity"] > 0
+        assert results["final_equity"] == equity_curve["equity"].iloc[-1]
 
         # Verify Greeks history
-        greeks_history = results['greeks_history']
+        greeks_history = results["greeks_history"]
         assert isinstance(greeks_history, pd.DataFrame)
         for greek in GREEK_NAMES:
             assert greek in greeks_history.columns
@@ -393,93 +384,100 @@ class TestFullBacktestWorkflow:
     def test_backtest_with_trades(self, mock_data_stream, execution_model):
         """Test backtest that generates actual trades."""
         strategy = ShortStraddleHighIVStrategy(
-            name='Short Straddle Aggressive',
+            name="Short Straddle Aggressive",
             initial_capital=100000.0,
             iv_rank_threshold=30,  # Lower threshold to generate more entries
             profit_target_pct=0.30,
             loss_limit_pct=3.0,
             min_entry_dte=60,
-            exit_dte=5
+            exit_dte=5,
         )
 
         engine = BacktestEngine(
             strategy=strategy,
             data_stream=mock_data_stream,
             execution_model=execution_model,
-            initial_capital=100000.0
+            initial_capital=100000.0,
         )
 
         results = engine.run()
-        trade_log = results['trade_log']
+        trade_log = results["trade_log"]
 
         # Verify trade log structure
         assert isinstance(trade_log, pd.DataFrame)
         if len(trade_log) > 0:
             expected_columns = [
-                'entry_date', 'exit_date', 'position_id',
-                'strategy_name', 'structure_type',
-                'entry_price', 'exit_price', 'pnl',
-                'return_pct', 'holding_days'
+                "entry_date",
+                "exit_date",
+                "position_id",
+                "strategy_name",
+                "structure_type",
+                "entry_price",
+                "exit_price",
+                "pnl",
+                "return_pct",
+                "holding_days",
             ]
             for col in expected_columns:
                 assert col in trade_log.columns
 
             # Verify P&L consistency
             for _, trade in trade_log.iterrows():
-                calculated_pnl = trade['exit_price'] - trade['entry_price']
-                assert abs(trade['pnl'] - calculated_pnl) < 0.01
+                calculated_pnl = trade["exit_price"] - trade["entry_price"]
+                assert abs(trade["pnl"] - calculated_pnl) < 0.01
 
     def test_backtest_equity_curve_consistency(self, mock_data_stream, execution_model):
         """Test equity curve financial consistency."""
         strategy = IronCondorStrategy(
-            name='Iron Condor Test',
+            name="Iron Condor Test",
             initial_capital=100000.0,
             std_dev_width=1.0,
             wing_width_pct=0.02,
             profit_target_pct=0.50,
-            loss_limit_pct=2.0
+            loss_limit_pct=2.0,
         )
 
         engine = BacktestEngine(
             strategy=strategy,
             data_stream=mock_data_stream,
             execution_model=execution_model,
-            initial_capital=100000.0
+            initial_capital=100000.0,
         )
 
         results = engine.run()
-        equity_curve = results['equity_curve']
+        equity_curve = results["equity_curve"]
 
         # Verify equity = cash + positions_value at all times
         for idx, row in equity_curve.iterrows():
-            calculated_equity = row['cash'] + row['positions_value']
-            assert abs(row['equity'] - calculated_equity) < 0.01, \
+            calculated_equity = row["cash"] + row["positions_value"]
+            assert abs(row["equity"] - calculated_equity) < 0.01, (
                 f"Equity mismatch at {idx}: {row['equity']} != {calculated_equity}"
+            )
 
         # Verify equity is monotonic or has reasonable drawdowns
-        equity_values = equity_curve['equity'].values
+        equity_values = equity_curve["equity"].values
         assert equity_values[0] == 100000.0  # Initial capital
         assert all(equity_values > 0)  # Never goes negative
 
     def test_backtest_greeks_aggregation(self, mock_data_stream, execution_model):
         """Test that portfolio Greeks are properly aggregated."""
         strategy = ShortStraddleHighIVStrategy(
-            name='Greeks Test',
+            name="Greeks Test",
             initial_capital=100000.0,
             iv_rank_threshold=40,
             profit_target_pct=0.50,
-            loss_limit_pct=2.0
+            loss_limit_pct=2.0,
         )
 
         engine = BacktestEngine(
             strategy=strategy,
             data_stream=mock_data_stream,
             execution_model=execution_model,
-            initial_capital=100000.0
+            initial_capital=100000.0,
         )
 
         results = engine.run()
-        greeks_history = results['greeks_history']
+        greeks_history = results["greeks_history"]
 
         # Verify Greeks are finite and reasonable
         for greek in GREEK_NAMES:
@@ -487,38 +485,39 @@ class TestFullBacktestWorkflow:
             assert np.all(np.isfinite(values)), f"{greek} contains non-finite values"
 
             # Greeks should be zero when no positions
-            if 'positions_value' in results['equity_curve'].columns:
-                zero_position_dates = results['equity_curve'][
-                    results['equity_curve']['positions_value'] == 0
+            if "positions_value" in results["equity_curve"].columns:
+                zero_position_dates = results["equity_curve"][
+                    results["equity_curve"]["positions_value"] == 0
                 ].index
 
                 for date in zero_position_dates:
                     if date in greeks_history.index:
-                        assert abs(greeks_history.loc[date, greek]) < 1e-6, \
+                        assert abs(greeks_history.loc[date, greek]) < 1e-6, (
                             f"{greek} should be zero when no positions"
+                        )
 
     def test_backtest_with_metrics_calculation(self, mock_data_stream, execution_model):
         """Test backtest followed by metrics calculation."""
         strategy = IronCondorStrategy(
-            name='Metrics Test',
+            name="Metrics Test",
             initial_capital=100000.0,
             std_dev_width=1.5,
             wing_width_pct=0.03,
-            profit_target_pct=0.50
+            profit_target_pct=0.50,
         )
 
         engine = BacktestEngine(
             strategy=strategy,
             data_stream=mock_data_stream,
             execution_model=execution_model,
-            initial_capital=100000.0
+            initial_capital=100000.0,
         )
 
         results = engine.run()
 
         # Calculate performance metrics
-        equity_curve = results['equity_curve']
-        returns = equity_curve['equity'].pct_change().dropna()
+        equity_curve = results["equity_curve"]
+        returns = equity_curve["equity"].pct_change().dropna()
 
         if len(returns) > 1:
             # Calculate key metrics
@@ -530,51 +529,47 @@ class TestFullBacktestWorkflow:
             assert isinstance(total_return, float)
             assert isinstance(sharpe, (float, type(None)))
             assert isinstance(max_dd_info, dict)
-            assert 'max_drawdown_pct' in max_dd_info
-            assert max_dd_info['max_drawdown_pct'] <= 0  # Drawdown is negative
-            assert total_return == results['total_return']
+            assert "max_drawdown_pct" in max_dd_info
+            assert max_dd_info["max_drawdown_pct"] <= 0  # Drawdown is negative
+            assert total_return == results["total_return"]
 
     def test_backtest_with_visualization(self, mock_data_stream, execution_model):
         """Test backtest followed by visualization generation."""
         strategy = ShortStraddleHighIVStrategy(
-            name='Viz Test',
+            name="Viz Test",
             initial_capital=100000.0,
             iv_rank_threshold=50,
-            profit_target_pct=0.50
+            profit_target_pct=0.50,
         )
 
         engine = BacktestEngine(
             strategy=strategy,
             data_stream=mock_data_stream,
             execution_model=execution_model,
-            initial_capital=100000.0
+            initial_capital=100000.0,
         )
 
         results = engine.run()
-        equity_curve = results['equity_curve']
+        equity_curve = results["equity_curve"]
 
         # Test matplotlib visualization
         with tempfile.TemporaryDirectory() as tmpdir:
-            save_path = os.path.join(tmpdir, 'equity_curve.png')
+            save_path = os.path.join(tmpdir, "equity_curve.png")
             fig = Visualization.plot_equity_curve(
-                equity_curve,
-                backend='matplotlib',
-                save_path=save_path
+                equity_curve, backend="matplotlib", save_path=save_path
             )
             assert fig is not None
             assert os.path.exists(save_path)
 
         # Test plotly visualization
-        fig = Visualization.plot_equity_curve(
-            equity_curve,
-            backend='plotly'
-        )
+        fig = Visualization.plot_equity_curve(equity_curve, backend="plotly")
         assert fig is not None
 
 
 # =============================================================================
 # Integration Test 2: Multi-Strategy Integration
 # =============================================================================
+
 
 class TestMultiStrategyIntegration:
     """Test multiple strategies running concurrently."""
@@ -583,18 +578,18 @@ class TestMultiStrategyIntegration:
         """Test that multiple strategies maintain isolation."""
         # Create two different strategies
         strategy1 = ShortStraddleHighIVStrategy(
-            name='Strategy 1',
+            name="Strategy 1",
             initial_capital=100000.0,
             iv_rank_threshold=60,
-            profit_target_pct=0.50
+            profit_target_pct=0.50,
         )
 
         strategy2 = IronCondorStrategy(
-            name='Strategy 2',
+            name="Strategy 2",
             initial_capital=100000.0,
             std_dev_width=1.0,
             wing_width_pct=0.02,
-            profit_target_pct=0.50
+            profit_target_pct=0.50,
         )
 
         # Run both strategies
@@ -602,14 +597,14 @@ class TestMultiStrategyIntegration:
             strategy=strategy1,
             data_stream=mock_data_stream,
             execution_model=execution_model,
-            initial_capital=100000.0
+            initial_capital=100000.0,
         )
 
         engine2 = BacktestEngine(
             strategy=strategy2,
             data_stream=mock_data_stream,
             execution_model=execution_model,
-            initial_capital=100000.0
+            initial_capital=100000.0,
         )
 
         results1 = engine1.run()
@@ -620,39 +615,32 @@ class TestMultiStrategyIntegration:
         assert results2 is not None
 
         # Verify both maintain capital consistency
-        assert results1['final_equity'] > 0
-        assert results2['final_equity'] > 0
+        assert results1["final_equity"] > 0
+        assert results2["final_equity"] > 0
 
         # If either strategy made trades, verify they're independent
         # (if no trades, equity curves will be identical at initial capital)
-        num_trades1 = len(results1['trade_log'])
-        num_trades2 = len(results2['trade_log'])
+        num_trades1 = len(results1["trade_log"])
+        num_trades2 = len(results2["trade_log"])
 
         if num_trades1 > 0 or num_trades2 > 0:
             # At least one strategy traded, so equity curves should differ
-            assert not results1['equity_curve'].equals(results2['equity_curve'])
+            assert not results1["equity_curve"].equals(results2["equity_curve"])
         else:
             # Neither strategy traded, both at initial capital - this is acceptable
-            assert results1['final_equity'] == 100000.0
-            assert results2['final_equity'] == 100000.0
+            assert results1["final_equity"] == 100000.0
+            assert results2["final_equity"] == 100000.0
 
     def test_strategy_comparison(self, mock_data_stream, execution_model):
         """Test comparing multiple strategies on same data."""
         strategies = [
             ShortStraddleHighIVStrategy(
-                name='Straddle',
-                initial_capital=100000.0,
-                iv_rank_threshold=50
+                name="Straddle", initial_capital=100000.0, iv_rank_threshold=50
             ),
             IronCondorStrategy(
-                name='Iron Condor',
-                initial_capital=100000.0,
-                std_dev_width=1.0
+                name="Iron Condor", initial_capital=100000.0, std_dev_width=1.0
             ),
-            VolatilityRegimeStrategy(
-                name='Vol Regime',
-                initial_capital=100000.0
-            )
+            VolatilityRegimeStrategy(name="Vol Regime", initial_capital=100000.0),
         ]
 
         results_list = []
@@ -661,27 +649,29 @@ class TestMultiStrategyIntegration:
                 strategy=strategy,
                 data_stream=mock_data_stream,
                 execution_model=execution_model,
-                initial_capital=100000.0
+                initial_capital=100000.0,
             )
             results = engine.run()
-            results_list.append({
-                'name': strategy.name,
-                'final_equity': results['final_equity'],
-                'total_return': results['total_return'],
-                'num_trades': len(results['trade_log'])
-            })
+            results_list.append(
+                {
+                    "name": strategy.name,
+                    "final_equity": results["final_equity"],
+                    "total_return": results["total_return"],
+                    "num_trades": len(results["trade_log"]),
+                }
+            )
 
         # Verify all strategies ran
         assert len(results_list) == 3
 
         # Verify all strategies completed successfully
         for result in results_list:
-            assert result['final_equity'] > 0
-            assert isinstance(result['total_return'], float)
-            assert result['num_trades'] >= 0
+            assert result["final_equity"] > 0
+            assert isinstance(result["total_return"], float)
+            assert result["num_trades"] >= 0
 
         # If any trades occurred, there may be variation in results
-        total_trades = sum(r['num_trades'] for r in results_list)
+        total_trades = sum(r["num_trades"] for r in results_list)
         if total_trades > 0:
             # At least one strategy traded
             pass  # Test passes if any strategy made trades
@@ -690,6 +680,7 @@ class TestMultiStrategyIntegration:
 # =============================================================================
 # Integration Test 3: Structure Creation Integration
 # =============================================================================
+
 
 class TestStructureCreationIntegration:
     """Test all 10 concrete structures integrate properly."""
@@ -704,29 +695,28 @@ class TestStructureCreationIntegration:
         structures = [
             # Straddles
             LongStraddle.create(
-                underlying='SPY',
+                underlying="SPY",
                 strike=450.0,
                 expiration=expiration,
                 call_price=10.0,
                 put_price=9.5,
                 quantity=quantity,
                 entry_date=base_date,
-                underlying_price=underlying_price
+                underlying_price=underlying_price,
             ),
             ShortStraddle.create(
-                underlying='SPY',
+                underlying="SPY",
                 strike=450.0,
                 expiration=expiration,
                 call_price=10.0,
                 put_price=9.5,
                 quantity=quantity,
                 entry_date=base_date,
-                underlying_price=underlying_price
+                underlying_price=underlying_price,
             ),
-
             # Strangles
             LongStrangle.create(
-                underlying='SPY',
+                underlying="SPY",
                 call_strike=460.0,
                 put_strike=440.0,
                 expiration=expiration,
@@ -734,10 +724,10 @@ class TestStructureCreationIntegration:
                 put_price=4.5,
                 quantity=quantity,
                 entry_date=base_date,
-                underlying_price=underlying_price
+                underlying_price=underlying_price,
             ),
             ShortStrangle.create(
-                underlying='SPY',
+                underlying="SPY",
                 call_strike=460.0,
                 put_strike=440.0,
                 expiration=expiration,
@@ -745,12 +735,11 @@ class TestStructureCreationIntegration:
                 put_price=4.5,
                 quantity=quantity,
                 entry_date=base_date,
-                underlying_price=underlying_price
+                underlying_price=underlying_price,
             ),
-
             # Vertical Spreads
             BullCallSpread.create(
-                underlying='SPY',
+                underlying="SPY",
                 long_strike=450.0,
                 short_strike=460.0,
                 expiration=expiration,
@@ -758,10 +747,10 @@ class TestStructureCreationIntegration:
                 short_price=5.0,
                 quantity=quantity,
                 entry_date=base_date,
-                underlying_price=underlying_price
+                underlying_price=underlying_price,
             ),
             BearPutSpread.create(
-                underlying='SPY',
+                underlying="SPY",
                 long_strike=450.0,
                 short_strike=440.0,
                 expiration=expiration,
@@ -769,10 +758,10 @@ class TestStructureCreationIntegration:
                 short_price=5.0,
                 quantity=quantity,
                 entry_date=base_date,
-                underlying_price=underlying_price
+                underlying_price=underlying_price,
             ),
             BullPutSpread.create(
-                underlying='SPY',
+                underlying="SPY",
                 long_strike=440.0,
                 short_strike=450.0,
                 expiration=expiration,
@@ -780,10 +769,10 @@ class TestStructureCreationIntegration:
                 short_price=10.0,
                 quantity=quantity,
                 entry_date=base_date,
-                underlying_price=underlying_price
+                underlying_price=underlying_price,
             ),
             BearCallSpread.create(
-                underlying='SPY',
+                underlying="SPY",
                 long_strike=460.0,
                 short_strike=450.0,
                 expiration=expiration,
@@ -791,12 +780,11 @@ class TestStructureCreationIntegration:
                 short_price=10.0,
                 quantity=quantity,
                 entry_date=base_date,
-                underlying_price=underlying_price
+                underlying_price=underlying_price,
             ),
-
             # Condors
             IronCondor.create(
-                underlying='SPY',
+                underlying="SPY",
                 put_buy_strike=435.0,
                 put_sell_strike=440.0,
                 call_sell_strike=460.0,
@@ -808,10 +796,10 @@ class TestStructureCreationIntegration:
                 call_buy_price=5.0,
                 quantity=quantity,
                 entry_date=base_date,
-                underlying_price=underlying_price
+                underlying_price=underlying_price,
             ),
             IronButterfly.create(
-                underlying='SPY',
+                underlying="SPY",
                 lower_strike=440.0,
                 middle_strike=450.0,
                 upper_strike=460.0,
@@ -822,7 +810,7 @@ class TestStructureCreationIntegration:
                 upper_price=3.0,
                 quantity=quantity,
                 entry_date=base_date,
-                underlying_price=underlying_price
+                underlying_price=underlying_price,
             ),
         ]
 
@@ -832,7 +820,7 @@ class TestStructureCreationIntegration:
         # Verify all are OptionStructure instances
         for structure in structures:
             assert isinstance(structure, OptionStructure)
-            assert structure.underlying == 'SPY'
+            assert structure.underlying == "SPY"
             # Check expiration via options
             if len(structure.options) > 0:
                 assert structure.options[0].expiration == expiration
@@ -845,7 +833,7 @@ class TestStructureCreationIntegration:
 
         # Create an iron condor (4 legs)
         ic = IronCondor.create(
-            underlying='SPY',
+            underlying="SPY",
             put_buy_strike=435.0,
             put_sell_strike=440.0,
             call_sell_strike=460.0,
@@ -857,15 +845,12 @@ class TestStructureCreationIntegration:
             call_buy_price=5.0,
             quantity=10,
             entry_date=base_date,
-            underlying_price=450.0
+            underlying_price=450.0,
         )
 
         # Calculate structure Greeks (which also calculates individual leg Greeks)
         structure_greeks = ic.calculate_net_greeks(
-            spot=450.0,
-            vol=0.20,
-            rate=0.04,
-            current_date=base_date
+            spot=450.0, vol=0.20, rate=0.04, current_date=base_date
         )
 
         # Calculate Greeks manually from legs
@@ -874,10 +859,7 @@ class TestStructureCreationIntegration:
         for leg in ic.options:
             # Recalculate leg Greeks to ensure they're fresh
             leg_greeks = leg.calculate_greeks(
-                spot=450.0,
-                vol=0.20,
-                rate=0.04,
-                current_date=base_date
+                spot=450.0, vol=0.20, rate=0.04, current_date=base_date
             )
             for greek in GREEK_NAMES:
                 manual_greeks[greek] += leg_greeks[greek]
@@ -885,8 +867,9 @@ class TestStructureCreationIntegration:
         # Compare with structure's aggregated Greeks
         # Use reasonable tolerance for floating point comparison
         for greek in GREEK_NAMES:
-            assert abs(structure_greeks[greek] - manual_greeks[greek]) < 3.0, \
+            assert abs(structure_greeks[greek] - manual_greeks[greek]) < 3.0, (
                 f"{greek} aggregation mismatch: structure={structure_greeks[greek]:.6f}, manual={manual_greeks[greek]:.6f}"
+            )
 
     def test_structure_pnl_consistency(self):
         """Test that structure P&L matches sum of leg P&Ls."""
@@ -895,14 +878,14 @@ class TestStructureCreationIntegration:
 
         # Create a short straddle
         straddle = ShortStraddle.create(
-            underlying='SPY',
+            underlying="SPY",
             strike=450.0,
             expiration=expiration,
             call_price=10.0,
             put_price=9.5,
             quantity=10,
             entry_date=base_date,
-            underlying_price=450.0
+            underlying_price=450.0,
         )
 
         # Update with new prices for each leg
@@ -930,7 +913,7 @@ class TestStructureCreationIntegration:
 
         # Bull Call Spread: max profit = width - debit, max loss = debit
         bcs = BullCallSpread.create(
-            underlying='SPY',
+            underlying="SPY",
             long_strike=450.0,
             short_strike=460.0,
             expiration=expiration,
@@ -938,7 +921,7 @@ class TestStructureCreationIntegration:
             short_price=5.0,
             quantity=10,
             entry_date=base_date,
-            underlying_price=450.0
+            underlying_price=450.0,
         )
 
         debit = (10.0 - 5.0) * 10 * 100  # 10 contracts, 100 multiplier
@@ -955,6 +938,7 @@ class TestStructureCreationIntegration:
 # Integration Test 4: Analytics Pipeline Integration
 # =============================================================================
 
+
 class TestAnalyticsPipelineIntegration:
     """Test complete analytics pipeline: Backtest → Metrics → Dashboard → Report."""
 
@@ -962,89 +946,89 @@ class TestAnalyticsPipelineIntegration:
         """Test full pipeline from backtest to report generation."""
         # Run backtest
         strategy = ShortStraddleHighIVStrategy(
-            name='Analytics Pipeline Test',
+            name="Analytics Pipeline Test",
             initial_capital=100000.0,
             iv_rank_threshold=50,
-            profit_target_pct=0.50
+            profit_target_pct=0.50,
         )
 
         engine = BacktestEngine(
             strategy=strategy,
             data_stream=mock_data_stream,
             execution_model=execution_model,
-            initial_capital=100000.0
+            initial_capital=100000.0,
         )
 
         results = engine.run()
 
         # Calculate all metrics
-        equity_curve = results['equity_curve']
-        trade_log = results['trade_log']
-        returns = equity_curve['equity'].pct_change().dropna()
+        equity_curve = results["equity_curve"]
+        trade_log = results["trade_log"]
+        returns = equity_curve["equity"].pct_change().dropna()
 
         metrics = {}
 
         # Performance metrics
         if len(returns) > 1:
-            metrics['total_return'] = PerformanceMetrics.calculate_total_return(equity_curve)
-            metrics['sharpe_ratio'] = PerformanceMetrics.calculate_sharpe_ratio(returns)
-            metrics['sortino_ratio'] = PerformanceMetrics.calculate_sortino_ratio(returns)
+            metrics["total_return"] = PerformanceMetrics.calculate_total_return(
+                equity_curve
+            )
+            metrics["sharpe_ratio"] = PerformanceMetrics.calculate_sharpe_ratio(returns)
+            metrics["sortino_ratio"] = PerformanceMetrics.calculate_sortino_ratio(
+                returns
+            )
             max_dd_info = PerformanceMetrics.calculate_max_drawdown(equity_curve)
-            metrics['max_drawdown'] = max_dd_info
+            metrics["max_drawdown"] = max_dd_info
             # Calculate Calmar ratio properly
-            annualized_return = PerformanceMetrics.calculate_annualized_return(equity_curve)
-            metrics['calmar_ratio'] = PerformanceMetrics.calculate_calmar_ratio(
-                annualized_return, max_dd_info['max_drawdown_pct']
+            annualized_return = PerformanceMetrics.calculate_annualized_return(
+                equity_curve
+            )
+            metrics["calmar_ratio"] = PerformanceMetrics.calculate_calmar_ratio(
+                annualized_return, max_dd_info["max_drawdown_pct"]
             )
 
         # Risk metrics
         if len(returns) > 1:
-            metrics['var_95'] = RiskAnalytics.calculate_var(returns, 0.95)
-            metrics['cvar_95'] = RiskAnalytics.calculate_cvar(returns, 0.95)
+            metrics["var_95"] = RiskAnalytics.calculate_var(returns, 0.95)
+            metrics["cvar_95"] = RiskAnalytics.calculate_cvar(returns, 0.95)
 
         # Trade metrics
         if len(trade_log) > 0:
-            metrics['win_rate'] = PerformanceMetrics.calculate_win_rate(trade_log)
-            metrics['profit_factor'] = PerformanceMetrics.calculate_profit_factor(trade_log)
-            metrics['avg_win'] = PerformanceMetrics.calculate_average_win(trade_log)
-            metrics['avg_loss'] = PerformanceMetrics.calculate_average_loss(trade_log)
+            metrics["win_rate"] = PerformanceMetrics.calculate_win_rate(trade_log)
+            metrics["profit_factor"] = PerformanceMetrics.calculate_profit_factor(
+                trade_log
+            )
+            metrics["avg_win"] = PerformanceMetrics.calculate_average_win(trade_log)
+            metrics["avg_loss"] = PerformanceMetrics.calculate_average_loss(trade_log)
 
         # Generate visualizations
         with tempfile.TemporaryDirectory() as tmpdir:
             # Equity curve
-            equity_path = os.path.join(tmpdir, 'equity.png')
+            equity_path = os.path.join(tmpdir, "equity.png")
             Visualization.plot_equity_curve(
-                equity_curve,
-                backend='matplotlib',
-                save_path=equity_path
+                equity_curve, backend="matplotlib", save_path=equity_path
             )
             assert os.path.exists(equity_path)
 
             # Drawdown
             if len(returns) > 1:
-                dd_path = os.path.join(tmpdir, 'drawdown.png')
+                dd_path = os.path.join(tmpdir, "drawdown.png")
                 Visualization.plot_drawdown(
-                    equity_curve,
-                    backend='matplotlib',
-                    save_path=dd_path
+                    equity_curve, backend="matplotlib", save_path=dd_path
                 )
                 assert os.path.exists(dd_path)
 
             # Dashboard
-            dashboard_path = os.path.join(tmpdir, 'dashboard.html')
+            dashboard_path = os.path.join(tmpdir, "dashboard.html")
             Dashboard.create_performance_dashboard(
-                results=results,
-                metrics=metrics,
-                save_path=dashboard_path
+                backtest_results=results, metrics=metrics, save_path=dashboard_path
             )
             assert os.path.exists(dashboard_path)
 
             # HTML Report
-            report_path = os.path.join(tmpdir, 'report.html')
+            report_path = os.path.join(tmpdir, "report.html")
             ReportGenerator.generate_html_report(
-                results=results,
-                metrics=metrics,
-                save_path=report_path
+                backtest_results=results, metrics=metrics, save_path=report_path
             )
             assert os.path.exists(report_path)
 
@@ -1055,32 +1039,32 @@ class TestAnalyticsPipelineIntegration:
     def test_metrics_consistency(self, mock_data_stream, execution_model):
         """Test that metrics are consistent across calculations."""
         strategy = IronCondorStrategy(
-            name='Metrics Consistency Test',
+            name="Metrics Consistency Test",
             initial_capital=100000.0,
             std_dev_width=1.0,
-            wing_width_pct=0.02
+            wing_width_pct=0.02,
         )
 
         engine = BacktestEngine(
             strategy=strategy,
             data_stream=mock_data_stream,
             execution_model=execution_model,
-            initial_capital=100000.0
+            initial_capital=100000.0,
         )
 
         results = engine.run()
-        equity_curve = results['equity_curve']
+        equity_curve = results["equity_curve"]
 
         # Calculate total return two ways
         total_return_1 = PerformanceMetrics.calculate_total_return(equity_curve)
-        initial_equity = equity_curve['equity'].iloc[0]
-        final_equity = equity_curve['equity'].iloc[-1]
+        initial_equity = equity_curve["equity"].iloc[0]
+        final_equity = equity_curve["equity"].iloc[-1]
         total_return_2 = (final_equity - initial_equity) / initial_equity
 
         assert abs(total_return_1 - total_return_2) < 1e-6
 
         # Verify Sharpe and Sortino relationship
-        returns = equity_curve['equity'].pct_change().dropna()
+        returns = equity_curve["equity"].pct_change().dropna()
         if len(returns) > 1:
             sharpe = PerformanceMetrics.calculate_sharpe_ratio(returns)
             sortino = PerformanceMetrics.calculate_sortino_ratio(returns)
@@ -1096,22 +1080,21 @@ class TestAnalyticsPipelineIntegration:
 # Integration Test 5: Data Flow Integration
 # =============================================================================
 
+
 class TestDataFlowIntegration:
     """Test data flow through entire pipeline."""
 
     def test_data_stream_to_engine_flow(self, mock_data_stream, execution_model):
         """Test data flows correctly from DataStream to Engine."""
         strategy = ShortStraddleHighIVStrategy(
-            name='Data Flow Test',
-            initial_capital=100000.0,
-            iv_rank_threshold=50
+            name="Data Flow Test", initial_capital=100000.0, iv_rank_threshold=50
         )
 
         engine = BacktestEngine(
             strategy=strategy,
             data_stream=mock_data_stream,
             execution_model=execution_model,
-            initial_capital=100000.0
+            initial_capital=100000.0,
         )
 
         # Track data flow using callback
@@ -1128,40 +1111,37 @@ class TestDataFlowIntegration:
         assert len(dates_processed) > 0
 
         # Verify equity curve matches processed dates
-        equity_curve = results['equity_curve']
+        equity_curve = results["equity_curve"]
         assert len(equity_curve) == len(dates_processed)
 
     def test_option_pricing_consistency(self):
         """Test that option pricing is consistent across components."""
         # Create option directly
         option = Option(
-            option_type='call',
-            position_type='long',
-            underlying='SPY',
+            option_type="call",
+            position_type="long",
+            underlying="SPY",
             strike=450.0,
             expiration=datetime(2024, 2, 16),
             quantity=10,
             entry_price=10.0,
             entry_date=datetime(2024, 1, 15),
             underlying_price_at_entry=450.0,
-            implied_vol_at_entry=0.20
+            implied_vol_at_entry=0.20,
         )
 
         # Price using Black-Scholes function
         T = (option.expiration - option.entry_date).days / 365.25
 
         bs_price = black_scholes_price(
-            S=450.0,
-            K=450.0,
-            T=T,
-            r=0.04,
-            sigma=0.20,
-            option_type='call'
+            S=450.0, K=450.0, T=T, r=0.04, sigma=0.20, option_type="call"
         )
 
         # Should be close to entry price (within reasonable tolerance for mock data)
         # Note: Mock data may have different implied vols and time values than entry price
-        assert abs(bs_price - 10.0) / 10.0 < 0.50  # Within 50% (reasonable for mock data)
+        assert (
+            abs(bs_price - 10.0) / 10.0 < 0.50
+        )  # Within 50% (reasonable for mock data)
 
     def test_end_to_end_data_transformation(self):
         """Test data transformations through entire pipeline."""
@@ -1172,35 +1152,34 @@ class TestDataFlowIntegration:
 
         # Create option chain
         option_chain = create_mock_option_chain(
-            underlying='SPY',
+            underlying="SPY",
             underlying_price=underlying_price,
             expiration=expiration,
             current_date=test_date,
-            iv=0.20
+            iv=0.20,
         )
 
         assert option_chain is not None
-        assert len(option_chain['calls']) > 0
-        assert len(option_chain['puts']) > 0
+        assert len(option_chain["calls"]) > 0
+        assert len(option_chain["puts"]) > 0
 
         # Create structure from option chain
         atm_strike = min(
-            option_chain['calls'],
-            key=lambda x: abs(x['strike'] - underlying_price)
-        )['strike']
+            option_chain["calls"], key=lambda x: abs(x["strike"] - underlying_price)
+        )["strike"]
 
-        call_data = next(c for c in option_chain['calls'] if c['strike'] == atm_strike)
-        put_data = next(p for p in option_chain['puts'] if p['strike'] == atm_strike)
+        call_data = next(c for c in option_chain["calls"] if c["strike"] == atm_strike)
+        put_data = next(p for p in option_chain["puts"] if p["strike"] == atm_strike)
 
         straddle = ShortStraddle.create(
-            underlying='SPY',
+            underlying="SPY",
             strike=atm_strike,
             expiration=expiration,
-            call_price=call_data['mid'],
-            put_price=put_data['mid'],
+            call_price=call_data["mid"],
+            put_price=put_data["mid"],
             quantity=10,
             entry_date=test_date,
-            underlying_price=underlying_price
+            underlying_price=underlying_price,
         )
 
         # Verify structure created successfully
@@ -1213,6 +1192,7 @@ class TestDataFlowIntegration:
 # Additional Edge Case Integration Tests
 # =============================================================================
 
+
 class TestEdgeCaseIntegration:
     """Test edge cases in integrated system."""
 
@@ -1220,25 +1200,25 @@ class TestEdgeCaseIntegration:
         """Test backtest where no trades are generated."""
         # Very restrictive strategy that won't enter
         strategy = ShortStraddleHighIVStrategy(
-            name='No Trades',
+            name="No Trades",
             initial_capital=100000.0,
             iv_rank_threshold=99,  # Impossibly high threshold
-            profit_target_pct=0.50
+            profit_target_pct=0.50,
         )
 
         engine = BacktestEngine(
             strategy=strategy,
             data_stream=mock_data_stream,
             execution_model=execution_model,
-            initial_capital=100000.0
+            initial_capital=100000.0,
         )
 
         results = engine.run()
 
         # Should complete successfully with no trades
-        assert len(results['trade_log']) == 0
-        assert results['final_equity'] == 100000.0  # No change
-        assert results['total_return'] == 0.0
+        assert len(results["trade_log"]) == 0
+        assert results["final_equity"] == 100000.0  # No change
+        assert results["total_return"] == 0.0
 
     def test_extreme_market_moves(self):
         """Test structures handle extreme market moves."""
@@ -1247,21 +1227,21 @@ class TestEdgeCaseIntegration:
 
         # Create short straddle
         straddle = ShortStraddle.create(
-            underlying='SPY',
+            underlying="SPY",
             strike=450.0,
             expiration=expiration,
             call_price=10.0,
             put_price=9.5,
             quantity=10,
             entry_date=base_date,
-            underlying_price=450.0
+            underlying_price=450.0,
         )
 
         # Extreme upward move - update prices
         new_date = base_date + timedelta(days=5)
         options = straddle.options
         options[0].update_price(150.0, new_date)  # Call
-        options[1].update_price(0.01, new_date)   # Put
+        options[1].update_price(0.01, new_date)  # Put
 
         # Should show large loss
         pnl = straddle.calculate_pnl()
@@ -1270,18 +1250,18 @@ class TestEdgeCaseIntegration:
 
         # Extreme downward move
         straddle2 = ShortStraddle.create(
-            underlying='SPY',
+            underlying="SPY",
             strike=450.0,
             expiration=expiration,
             call_price=10.0,
             put_price=9.5,
             quantity=10,
             entry_date=base_date,
-            underlying_price=450.0
+            underlying_price=450.0,
         )
 
         options2 = straddle2.options
-        options2[0].update_price(0.01, new_date)   # Call
+        options2[0].update_price(0.01, new_date)  # Call
         options2[1].update_price(150.0, new_date)  # Put
 
         # Should show large loss
@@ -1296,14 +1276,14 @@ class TestEdgeCaseIntegration:
 
         # Create structure
         straddle = ShortStraddle.create(
-            underlying='SPY',
+            underlying="SPY",
             strike=450.0,
             expiration=expiration,
             call_price=10.0,
             put_price=9.5,
             quantity=10,
             entry_date=base_date,
-            underlying_price=450.0
+            underlying_price=450.0,
         )
 
         # Update at expiration
@@ -1325,6 +1305,7 @@ class TestEdgeCaseIntegration:
 # Performance Integration Tests
 # =============================================================================
 
+
 class TestPerformanceIntegration:
     """Test system performance with realistic workloads."""
 
@@ -1335,10 +1316,10 @@ class TestPerformanceIntegration:
         end_date = datetime(2024, 12, 31)  # 2 years
 
         market_data_df = create_mock_market_data(
-            underlying='SPY',
+            underlying="SPY",
             start_date=start_date,
             end_date=end_date,
-            initial_price=400.0
+            initial_price=400.0,
         )
 
         # Should complete in reasonable time
@@ -1355,14 +1336,14 @@ class TestPerformanceIntegration:
             expiration = base_date + timedelta(days=30 + i)
 
             straddle = ShortStraddle.create(
-                underlying='SPY',
+                underlying="SPY",
                 strike=strike,
                 expiration=expiration,
                 call_price=10.0,
                 put_price=9.5,
                 quantity=1,
                 entry_date=base_date,
-                underlying_price=450.0
+                underlying_price=450.0,
             )
             positions.append(straddle)
 
@@ -1378,5 +1359,5 @@ class TestPerformanceIntegration:
         assert all(np.isfinite(total_greeks[greek]) for greek in GREEK_NAMES)
 
 
-if __name__ == '__main__':
-    pytest.main([__file__, '-v', '--tb=short'])
+if __name__ == "__main__":
+    pytest.main([__file__, "-v", "--tb=short"])
