@@ -125,7 +125,7 @@ def render_equity_curve(results: Dict[str, Any]) -> None:
     fig.update_yaxes(title_text="Equity ($)", tickformat="$,.0f", row=1, col=1)
     fig.update_yaxes(title_text="Drawdown (%)", tickformat=".1f", row=2, col=1)
 
-    st.plotly_chart(fig, use_container_width=True)
+    st.plotly_chart(fig, width="stretch")
 
 
 def render_returns_distribution(results: Dict[str, Any]) -> None:
@@ -181,7 +181,7 @@ def render_returns_distribution(results: Dict[str, Any]) -> None:
         margin=dict(l=0, r=0, t=40, b=0),
     )
 
-    st.plotly_chart(fig, use_container_width=True)
+    st.plotly_chart(fig, width="stretch")
 
 
 def render_trades_table(results: Dict[str, Any]) -> None:
@@ -209,7 +209,7 @@ def render_trades_table(results: Dict[str, Any]) -> None:
                 "result",
             ]
         ],
-        use_container_width=True,
+        width="stretch",
         hide_index=True,
         column_config={
             "trade_id": st.column_config.NumberColumn("Trade #", format="%d"),
@@ -341,7 +341,7 @@ def render_monthly_returns(results: Dict[str, Any]) -> None:
         margin=dict(l=0, r=0, t=40, b=0),
     )
 
-    st.plotly_chart(fig, use_container_width=True)
+    st.plotly_chart(fig, width="stretch")
 
 
 def render_comparison_chart(results_list: list) -> None:
@@ -379,7 +379,7 @@ def render_comparison_chart(results_list: list) -> None:
         legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1),
     )
 
-    st.plotly_chart(fig, use_container_width=True)
+    st.plotly_chart(fig, width="stretch")
 
 
 def render_comparison_table(results_list: list) -> None:
@@ -410,4 +410,4 @@ def render_comparison_table(results_list: list) -> None:
         )
 
     df = pd.DataFrame(data)
-    st.dataframe(df, use_container_width=True, hide_index=True)
+    st.dataframe(df, width="stretch", hide_index=True)
