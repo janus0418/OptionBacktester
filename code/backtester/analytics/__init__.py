@@ -169,55 +169,104 @@ from backtester.analytics.report import (
     ReportSaveError,
 )
 
+from backtester.analytics.monte_carlo import (
+    # Main class
+    MonteCarloSimulator,
+    # Data classes
+    SimulationResult,
+    ConfidenceInterval,
+    # Exceptions
+    MonteCarloError,
+    InsufficientDataError as MonteCarloInsufficientDataError,
+    InvalidParameterError,
+    SimulationError,
+    # Constants
+    DEFAULT_NUM_SIMULATIONS,
+    DEFAULT_NUM_PERIODS,
+    DEFAULT_CONFIDENCE_LEVEL,
+)
+
+from backtester.analytics.scenario_testing import (
+    # Main class
+    ScenarioTester,
+    # Data classes
+    Scenario,
+    ScenarioResult,
+    SensitivityResult,
+    # Enums
+    ScenarioType,
+    # Exceptions
+    ScenarioError,
+    InvalidScenarioError,
+    InsufficientDataError as ScenarioInsufficientDataError,
+    # Predefined scenarios
+    STRESS_SCENARIOS,
+    HISTORICAL_SCENARIOS,
+    # Utility functions
+    get_predefined_scenario,
+    list_available_scenarios,
+)
+
 
 # =============================================================================
 # Module Exports
 # =============================================================================
 
 __all__ = [
-    # Performance Metrics
-    'PerformanceMetrics',
-    'MetricsError',
-    'MetricsInsufficientDataError',
-    'MetricsInvalidDataError',
-
-    # Risk Analytics
-    'RiskAnalytics',
-    'RiskAnalyticsError',
-    'RiskInsufficientDataError',
-    'RiskInvalidDataError',
-    'InvalidConfidenceError',
-
-    # Visualization
-    'Visualization',
-    'VisualizationError',
-    'InvalidBackendError',
-    'VisualizationInsufficientDataError',
-    'VisualizationSaveError',
-
-    # Dashboard
-    'Dashboard',
-    'DashboardError',
-    'DashboardDataError',
-    'DashboardSaveError',
-
-    # Report Generator
-    'ReportGenerator',
-    'ReportError',
-    'ReportDataError',
-    'ReportSaveError',
-
-    # Constants
-    'TRADING_DAYS_PER_YEAR',
-    'DEFAULT_RISK_FREE_RATE',
-    'VAR_CONFIDENCE_95',
-    'VAR_CONFIDENCE_99',
-    'Z_SCORES',
-    'GREEK_NAMES',
-    'SUPPORTED_BACKENDS',
-    'COLOR_PROFIT',
-    'COLOR_LOSS',
-    'COLOR_NEUTRAL',
-    'COLOR_EQUITY',
-    'COLOR_DRAWDOWN',
+    "PerformanceMetrics",
+    "MetricsError",
+    "MetricsInsufficientDataError",
+    "MetricsInvalidDataError",
+    "RiskAnalytics",
+    "RiskAnalyticsError",
+    "RiskInsufficientDataError",
+    "RiskInvalidDataError",
+    "InvalidConfidenceError",
+    "Visualization",
+    "VisualizationError",
+    "InvalidBackendError",
+    "VisualizationInsufficientDataError",
+    "VisualizationSaveError",
+    "Dashboard",
+    "DashboardError",
+    "DashboardDataError",
+    "DashboardSaveError",
+    "ReportGenerator",
+    "ReportError",
+    "ReportDataError",
+    "ReportSaveError",
+    "MonteCarloSimulator",
+    "SimulationResult",
+    "ConfidenceInterval",
+    "MonteCarloError",
+    "MonteCarloInsufficientDataError",
+    "InvalidParameterError",
+    "SimulationError",
+    "ScenarioTester",
+    "Scenario",
+    "ScenarioResult",
+    "SensitivityResult",
+    "ScenarioType",
+    "ScenarioError",
+    "InvalidScenarioError",
+    "ScenarioInsufficientDataError",
+    "STRESS_SCENARIOS",
+    "HISTORICAL_SCENARIOS",
+    "get_predefined_scenario",
+    "list_available_scenarios",
+    "TRADING_DAYS_PER_YEAR",
+    "DEFAULT_RISK_FREE_RATE",
+    "VAR_CONFIDENCE_95",
+    "VAR_CONFIDENCE_99",
+    "Z_SCORES",
+    "GREEK_NAMES",
+    "SUPPORTED_BACKENDS",
+    "COLOR_PROFIT",
+    "COLOR_LOSS",
+    "COLOR_NEUTRAL",
+    "COLOR_EQUITY",
+    "COLOR_DRAWDOWN",
+    "DEFAULT_NUM_SIMULATIONS",
+    "DEFAULT_NUM_PERIODS",
+    "DEFAULT_CONFIDENCE_LEVEL",
 ]
