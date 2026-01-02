@@ -51,6 +51,23 @@ from backtester.strategies.volatility_regime_strategy import (
     VolatilityRegime,
 )
 
+from backtester.strategies.strategy_templates import (
+    # Templates
+    HighIVStraddleTemplate,
+    IronCondorTemplate,
+    WheelStrategyTemplate,
+    EarningsStraddleTemplate,
+    TrendFollowingTemplate,
+    # Configuration Classes
+    HighIVStraddleConfig,
+    IronCondorConfig,
+    WheelConfig,
+    EarningsStraddleConfig,
+    TrendFollowingConfig,
+    # Registry
+    TemplateRegistry,
+)
+
 from backtester.strategies.strategy_builder import (
     StrategyBuilder,
     BuiltStrategy,
@@ -202,4 +219,18 @@ __all__ = [
     "StrategyBuilderError",
     "BuilderValidationError",
     "ConditionError",
+    # Strategy Templates
+    "HighIVStraddleTemplate",
+    "IronCondorTemplate",
+    "WheelStrategyTemplate",
+    "EarningsStraddleTemplate",
+    "TrendFollowingTemplate",
+    # Template Configurations
+    "HighIVStraddleConfig",
+    "IronCondorConfig",
+    "WheelConfig",
+    "EarningsStraddleConfig",
+    "TrendFollowingConfig",
+    # Template Registry
+    "TemplateRegistry",
 ]
