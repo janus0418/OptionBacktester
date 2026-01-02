@@ -91,12 +91,10 @@ from backtester.core.pricing import (
     # Exceptions
     PricingError,
     ImpliedVolatilityError,
-
     # Core pricing functions
     black_scholes_call,
     black_scholes_put,
     black_scholes_price,
-
     # Individual Greeks
     calculate_delta,
     calculate_gamma,
@@ -104,19 +102,15 @@ from backtester.core.pricing import (
     calculate_vega,
     calculate_rho,
     calculate_greeks,
-
     # Implied volatility
     calculate_implied_volatility,
-
     # American options (Barone-Adesi-Whaley)
     barone_adesi_whaley_american_call,
     barone_adesi_whaley_american_put,
-
     # Vectorized functions for performance
     black_scholes_call_vectorized,
     black_scholes_put_vectorized,
     calculate_greeks_vectorized,
-
     # Constants
     DAYS_PER_YEAR,
     TRADING_DAYS_PER_YEAR,
@@ -126,18 +120,15 @@ from backtester.core.pricing import (
 from backtester.core.option import (
     # Main class
     Option,
-
     # Exceptions
     OptionError,
     OptionExpiredError,
     OptionValidationError,
-
     # Factory functions
     create_long_call,
     create_short_call,
     create_long_put,
     create_short_put,
-
     # Constants
     CONTRACT_MULTIPLIER,
     DEFAULT_ATM_THRESHOLD,
@@ -145,17 +136,23 @@ from backtester.core.option import (
 
 # Import OptionStructure class and related
 from backtester.core.option_structure import (
-    # Main class
     OptionStructure,
-
-    # Exceptions
     OptionStructureError,
     OptionStructureValidationError,
     EmptyStructureError,
-
-    # Constants
     BREAKEVEN_TOLERANCE,
     GREEK_NAMES,
+)
+
+# Import American option pricing
+from backtester.core.american_pricing import (
+    BinomialPricer,
+    AmericanOptionPricer,
+    AmericanPricingError,
+    TreeConstructionError,
+    price_american_option,
+    calculate_american_greeks,
+    DEFAULT_TREE_STEPS,
 )
 
 # Define public API
@@ -163,80 +160,77 @@ __all__ = [
     # =========================================================================
     # Option Class
     # =========================================================================
-    'Option',
-
+    "Option",
     # Option Exceptions
-    'OptionError',
-    'OptionExpiredError',
-    'OptionValidationError',
-
+    "OptionError",
+    "OptionExpiredError",
+    "OptionValidationError",
     # Option Factory Functions
-    'create_long_call',
-    'create_short_call',
-    'create_long_put',
-    'create_short_put',
-
+    "create_long_call",
+    "create_short_call",
+    "create_long_put",
+    "create_short_put",
     # =========================================================================
     # OptionStructure Class
     # =========================================================================
-    'OptionStructure',
-
+    "OptionStructure",
     # OptionStructure Exceptions
-    'OptionStructureError',
-    'OptionStructureValidationError',
-    'EmptyStructureError',
-
+    "OptionStructureError",
+    "OptionStructureValidationError",
+    "EmptyStructureError",
     # =========================================================================
     # Pricing Functions
     # =========================================================================
     # Core BS pricing
-    'black_scholes_call',
-    'black_scholes_put',
-    'black_scholes_price',
-
+    "black_scholes_call",
+    "black_scholes_put",
+    "black_scholes_price",
     # Pricing Exceptions
-    'PricingError',
-    'ImpliedVolatilityError',
-
+    "PricingError",
+    "ImpliedVolatilityError",
     # =========================================================================
     # Greeks
     # =========================================================================
-    'calculate_delta',
-    'calculate_gamma',
-    'calculate_theta',
-    'calculate_vega',
-    'calculate_rho',
-    'calculate_greeks',
-
+    "calculate_delta",
+    "calculate_gamma",
+    "calculate_theta",
+    "calculate_vega",
+    "calculate_rho",
+    "calculate_greeks",
     # =========================================================================
     # Implied Volatility
     # =========================================================================
-    'calculate_implied_volatility',
-
+    "calculate_implied_volatility",
     # =========================================================================
-    # American Options
+    # American Options (BAW approximation)
     # =========================================================================
-    'barone_adesi_whaley_american_call',
-    'barone_adesi_whaley_american_put',
-
+    "barone_adesi_whaley_american_call",
+    "barone_adesi_whaley_american_put",
+    # American Options (Binomial Tree)
+    "BinomialPricer",
+    "AmericanOptionPricer",
+    "AmericanPricingError",
+    "TreeConstructionError",
+    "price_american_option",
+    "calculate_american_greeks",
+    "DEFAULT_TREE_STEPS",
     # =========================================================================
     # Vectorized Functions
     # =========================================================================
-    'black_scholes_call_vectorized',
-    'black_scholes_put_vectorized',
-    'calculate_greeks_vectorized',
-
+    "black_scholes_call_vectorized",
+    "black_scholes_put_vectorized",
+    "calculate_greeks_vectorized",
     # =========================================================================
     # Constants
     # =========================================================================
-    'CONTRACT_MULTIPLIER',
-    'DEFAULT_ATM_THRESHOLD',
-    'DAYS_PER_YEAR',
-    'TRADING_DAYS_PER_YEAR',
-    'BREAKEVEN_TOLERANCE',
-    'GREEK_NAMES',
+    "CONTRACT_MULTIPLIER",
+    "DEFAULT_ATM_THRESHOLD",
+    "DAYS_PER_YEAR",
+    "TRADING_DAYS_PER_YEAR",
+    "BREAKEVEN_TOLERANCE",
+    "GREEK_NAMES",
 ]
 
 # Module metadata
-__version__ = '0.1.0'
-__author__ = 'Options Backtester Team'
+__version__ = "0.1.0"
+__author__ = "Options Backtester Team"
